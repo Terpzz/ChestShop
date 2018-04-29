@@ -41,7 +41,8 @@ class SignListener implements Listener {
 
         $sign = $event->getPlayer()->getLevel()->getTile($event->getBlock());
         $signBlock = $sign;
-        $metadata = $metadata->getMatadata(); 
+        $metadata = $blockMetadataStore;
+        $blockMetadataStore = $metadata->getMatadata(); 
         $sign = $signBlock->getText();
 
         if (strtoupper($sign[0]) === "[CHESTSHOP]") {
