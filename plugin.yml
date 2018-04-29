@@ -3,4 +3,4 @@ version: 1.0.1
 api: [3.0.0-ALPHA11, 3.0.0-ALPHA12]
 author: SamJakob, edited by Zeao
 description: Plugins together all in one.
-main: SamJakob\ChestShop
+main: SamJakob\ChestShop\ChestShop
