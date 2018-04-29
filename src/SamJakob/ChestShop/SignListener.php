@@ -11,6 +11,7 @@ use pocketmine\block\Chest;
 use pocketmine\event\Listener;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\metadata\BlockMetadataStore;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use onebone\economyapi\EconomyAPI;
@@ -39,7 +40,8 @@ class SignListener implements Listener {
         }
 
         $sign = $event->getPlayer()->getLevel()->getTile($event->getBlock());
-        $signBlock = $blockMetadataStore;
+        $signBlock = $sign;
+        $metadata = $metadata->getMatadata(); 
         $sign = $signBlock->getText();
 
         if (strtoupper($sign[0]) === "[CHESTSHOP]") {
@@ -53,7 +55,7 @@ class SignListener implements Listener {
             if ($sign[1] === "buy") {
                 if (is_numeric($sign[2]) && is_numeric(str_replace("$", "", $sign[3]))) {
                     $signBlock->setText("§1[ChestShop]", $sign[1], $sign[2], "$" . str_replace("$", "", $sign[3]));
-                    $signBlock->setMetaData("owner", new MetadataValue($plugin));
+                    $metadata->setMetaData("owner", new MetadataValue($plugin));
 
                     $event->getPlayer()->sendMessage("§a[ChestShop] Shop successfully created. It will sell items in the chest from first slot to last.");
                 } else {
