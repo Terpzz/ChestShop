@@ -6,6 +6,7 @@
 
 namespace SamJakob\ChestShop;
 
+use pocketmine\block\VanillaBlocks;
 use pocketmine\block\Block;
 use pocketmine\block\Chest;
 use pocketmine\event\Listener;
@@ -35,11 +36,11 @@ class SignListener implements Listener {
 
     //$chest = $this->findChest($event->getBlock());
     function onSignSmack(PlayerInteractEvent $event) {
-        if ($event->getAction() != PlayerInteractEvent::RIGHT_CLICK_BLOCK || $event->getBlock()->getId() != Block::WALL_SIGN) {
+        if ($event->getAction() != PlayerInteractEvent::RIGHT_CLICK_BLOCK || $event->getBlock()->getTypeId() != VanillaBlocks::WALL_SIGN) {
             return;
         }
 
-        $sign = $event->getPlayer()->getLevel()->getTile($event->getBlock());
+        $sign = $event->getPlayer()->getWorld()->getTile($event->getBlock());
         $signBlock = $sign;
         $metadata = $blockMetadataStore;
         $blockMetadataStore = $metadata->getMatadata(); 
@@ -86,7 +87,7 @@ class SignListener implements Listener {
                         $item->setCount($item->getCount() - $amount);
                     }
                     
-                    $event->getPlayer()->getInventory()->addItem(new Item($item->getId(), $item->getDamage(), $amount));
+                    $event->getPlayer()->getInventory()->addItem(new Item($item->getTypeId(), $item->getDamage(), $amount));
                     $event->getPlayer()->sendMessage("§a[ChestShop] You have successfully bought " . $amount . "x " . $item->getName());
                 }else{
                     $event->getPlayer()->sendMessage("§c[ChestShop] Sorry, you can't afford this item.");
@@ -99,20 +100,20 @@ class SignListener implements Listener {
 
     public function findChest(Block $sign) {
         // Chest is north of sign
-        if ($sign->getSide(Vector3::SIDE_NORTH)->getId() === Block::CHEST) {
-            return Chest::fromObject($sign->asVector3()->getSide(Vector3::SIDE_NORTH), $sign->getLevel());
+        if ($sign->getSide(Vector3::SIDE_NORTH)->getTypeId() === VanillaBlocks::CHEST) {
+            return Chest::fromObject($sign->asVector3()->getSide(Vector3::SIDE_NORTH), $sign->getWorld());
 
             // Chest is south of sign
-        } else if ($sign->getSide(Vector3::SIDE_SOUTH)->getId() === Block::CHEST) {
-            return Chest::fromObject($sign->asVector3()->getSide(Vector3::SIDE_SOUTH), $sign->getLevel());
+        } else if ($sign->getSide(Vector3::SIDE_SOUTH)->getTypeId() === VanillaBlocks::CHEST) {
+            return Chest::fromObject($sign->asVector3()->getSide(Vector3::SIDE_SOUTH), $sign->getWorld());
 
             // Chest is east of sign
-        } else if ($sign->getSide(Vector3::SIDE_EAST)->getId() === Block::CHEST) {
-            return Chest::fromObject($sign->asVector3()->getSide(Vector3::SIDE_EAST), $sign->getLevel());
+        } else if ($sign->getSide(Vector3::SIDE_EAST)->getTypeId() === VanillaBlocks::CHEST) {
+            return Chest::fromObject($sign->asVector3()->getSide(Vector3::SIDE_EAST), $sign->getWorld());
 
             // Chest is west of sign
-        } else if ($sign->getSide(Vector3::SIDE_WEST)->getId() === Block::CHEST) {
-            return Chest::fromObject($sign->asVector3()->getSide(Vector3::SIDE_WEST), $sign->getLevel());
+        } else if ($sign->getSide(Vector3::SIDE_WEST)->getTypeId() === VanillaBlocks::CHEST) {
+            return Chest::fromObject($sign->asVector3()->getSide(Vector3::SIDE_WEST), $sign->getWorld());
         } else {
             return false;
         }
